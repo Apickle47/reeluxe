@@ -1,0 +1,41 @@
+/* Progressive disclosure for play; the cabinet and entrance are untouched. */
+body[data-view="game"] .game-floor{max-width:1100px}
+.game-steps{display:flex;gap:20px;margin:20px 0;color:#9eafc4;font-size:13px}
+.game-steps span{display:flex;align-items:center;gap:8px;flex:1}
+.game-steps b{display:grid;place-items:center;flex:0 0 28px;height:28px;border:1px solid #52627b;border-radius:50%}
+.game-steps .current{color:#f0d18d;font-weight:700}.game-steps .current b{background:#f0d18d;color:#152638;border-color:#f0d18d}.game-steps .complete{color:#8bdac2}
+.quick-brief{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:18px 0 12px;font-size:13px;color:#c3cfe0}.quick-brief button{white-space:nowrap}
+#evidenceWorkspace{margin:0 0 20px;border:1px solid #344761;border-radius:12px;background:#152439}
+#evidenceWorkspace>summary{padding:15px 18px;cursor:pointer;color:#e5ebf4;font-weight:600}
+#evidenceWorkspace>summary small{font-weight:400;color:#acbbcf;margin-left:14px}
+#evidenceWorkspace[open]>summary{border-bottom:1px solid #344761}
+#evidenceWorkspace #investigationDesk{padding:18px;margin:0}
+.quick-plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:24px 0 12px}
+body[data-view="game"] .quick-plan{display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px 12px;text-align:left;background:#1a2b43;border:1px solid #475978;color:#d2dceb;border-radius:13px;padding:18px;min-height:150px;cursor:pointer;font:inherit;transition:border-color .15s,background .15s}
+.quick-plan .quick-symbol{grid-row:1/4;font-size:28px;color:#e7c77e}.quick-plan strong{font-size:18px;color:#fff}.quick-plan>span:not(.quick-symbol){font-size:13px;line-height:1.5}.quick-plan>b{font-size:12px;color:#efce88;margin-top:6px}
+body[data-view="game"] .quick-plan:hover{background:#253950;border-color:#c4a366}
+body[data-view="game"] .quick-plan[aria-pressed="true"]{border:2px solid #e7c77e;padding:17px;background:#29374a;box-shadow:0 0 0 2px #e7c77e18}
+.simple-outcomes{margin:24px 0}.simple-budget{display:flex;gap:28px;border-block:1px solid #3b4d66;padding:18px 0;margin-bottom:22px}.simple-budget span{font-size:13px;color:#bdcadd}.simple-budget b{display:block;color:#f3d496;font-size:26px;margin-top:5px}
+.outcome-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.outcome-cards>div{background:#15243a;border:1px solid #344761;border-radius:10px;padding:16px}.outcome-cards span{font-size:12px;color:#c1ccdb}.outcome-cards b{display:block;font-size:25px;color:#f2e4bf;margin-top:6px}
+.scenario-detail,.plan-custom,.result-details{border-top:1px solid #3b4d66;padding:15px 0;margin:12px 0}.scenario-detail>summary,.plan-custom>summary,.result-details>summary,.lab>summary{cursor:pointer;font-size:14px;font-weight:600;color:#e4d1a5;line-height:1.6}.plan-custom>summary>span,.lab>summary>span{display:block;font-weight:400;font-size:12px;color:#a8b9d0;padding-left:17px}
+.plan-custom[open]>summary{margin-bottom:16px}.scenario-detail .plan-scenarios{margin-top:18px}.result-details .results-grid{margin-top:20px}
+body[data-view="game"] #stage .scope{font-size:10px;letter-spacing:.04em;color:#aebed2}
+body[data-view="game"] .plan-grid{gap:14px}
+body[data-view="game"] #stage textarea{min-height:90px}
+body[data-view="game"] #stage .results-head h2{font-size:clamp(26px,4vw,40px)}
+@media(max-width:600px){.game-steps{gap:8px;font-size:11px}.game-steps span{align-items:flex-start;flex-direction:column;gap:6px}.game-steps b{flex-basis:26px;width:26px;height:26px}.quick-brief{align-items:flex-start;font-size:12px}.quick-plans{grid-template-columns:1fr}body[data-view="game"] .quick-plan{min-height:120px;padding:15px}body[data-view="game"] .quick-plan[aria-pressed="true"]{padding:14px}.outcome-cards{gap:6px}.outcome-cards>div{padding:12px 8px}.outcome-cards b{font-size:19px}.simple-budget{gap:24px}#evidenceWorkspace>summary small{display:block;margin:5px 0 0 17px}#evidenceWorkspace #investigationDesk{padding:10px}.quick-brief button{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.quick-plan{transition:none}}
+/* Final pass: one task at a time; budget lives beside the plan. */
+body[data-view="game"] :is(.hud,.section-top,.quick-brief){display:none}
+body[data-view="game"][data-phase="case"] #evidenceWorkspace:not([open]){display:none}
+body[data-view="game"] .quick-plans{grid-template-columns:repeat(3,minmax(0,1fr))}
+.test-options{padding:18px;border:1px solid #695c42;border-radius:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.test-options>p{grid-column:1/-1;margin:0}
+.manager-decision>h2{font-size:clamp(28px,4vw,42px);line-height:1.15;max-width:780px}
+.manager-decision>p{max-width:800px;line-height:1.7}
+body[data-view="game"] .game-floor{padding-top:24px}
+body[data-view="game"] #stage{scroll-margin-top:90px}
+@media(max-width:700px){body[data-view="game"] .quick-plans,.test-options{grid-template-columns:1fr}body[data-view="game"] .quick-plan{min-height:110px}.game-steps{margin-top:0}.manager-decision>h2{font-size:28px}}
+.plain-plan p{max-width:650px;line-height:1.65}.plain-why{margin:16px 0;border:1px solid #40516b;border-radius:10px;padding:14px}.plain-why>summary{cursor:pointer;color:#f1d58b;font-weight:600}.plain-why p{margin:12px 0 0}
+#judgePlanControls{padding:0 24px 24px}#judgePlanControls[hidden]{display:none!important}#judgePlanControls .lab{margin-top:20px}#judgePlanControls .lab>summary{margin-bottom:16px}
+@media(max-width:600px){#judgePlanControls{padding:0 10px 16px}}

@@ -1,0 +1,70 @@
+# Claims & Evidence — final strengthened version
+
+Dataset: organizer release 0.9.0-draft, commit 5f9274bdc3efa6614e6c081becaeadda34c57a32. Source parquet fingerprints are embedded in code/data.json. All dates are gaming dates unless stated. Fictional casino; synthetic data. Figures are descriptive unless explicitly marked as forecasts or assumptions.
+
+| Claim | Table / query → result | Competing explanation / limitation |
+|---|---|---|
+| The bottom ten do not justify blanket replacement | analysis.py C1–C4; machine_day + game_math + dated prepared_daily_view: nine Back Forty machines, three with partial exposure; 8/10 have absolute luck z below 2 | Game math, location and exposure compete with a defective-machine explanation. Expected earning power is not proof of causation. |
+| M-1158 merits inspection | C3: 38.57% positive-payout spins vs 31.54% published; hit z about 124, luck z −4.57 | Published configuration, meter errors or correlated spins may explain it. Screen threshold 3.95 approximately controls family-wise error over 310 machines × two endpoints under normal assumptions. Repeated filtered searches are exploratory. |
+| M-1152 changes after moving | advanced_analysis.py movers: same-game source-zone controls; 28 days each side excluding Feb 4; +130.4%, pointwise block CI +105.7% to +160.9%. Destination-control estimate +128.4%; pre-period placebo +2.1% | Nonrandom move; three origin and two destination peers; possible redistribution. Four exploratory cases, not randomized tests. |
+| Other movers are inconclusive | M-1113 +9.5% [−2.0,+20.7]; M-1126 +0.5% [−8.4,+9.9]; M-1299 −6.1% [−19.1,+6.9] | Windows 28/28/20 days each side. Pre-placebo changes +14.9%, +13.7%, −15.4% weaken causal readings. Never select controls based on post-move performance. |
+| Closure is not a clean causal experiment | pretrend: Jan 6–Mar 2 log rate-ratio trend + weekday controls; −0.81%/week, block CI [−1.41,−0.23]%; balanced 295-machine panel −0.74%/week; Feb 3 placebo −2.26% | Existing trend violates simple parallel-trend reasoning. Matched 35-day closure comparison −30.69% is descriptive; renovation and composition remain alternatives. |
+| Downtime implies machine-level loss, not necessarily property loss | matchedDowntime: leave-own-machine-out config × actual zone × weekday × hour peers; $1,098,761 wagers / $102,216 theo; 86.75% of unavailable hours zone-matched; remaining cells use same config across zones | At 0/50/100% retained elsewhere, property forgone theo is $102,216/$51,108/$0. Switching is assumed. Match needs ≥3 peers and ≥24 available peer hours. Same-hour peer demand may already absorb displaced play. |
+| Tracked outcomes and concentration differ from all-play meters | C8–C10: $163.8M wagers, $148.2M payout; 16.4% player-months ahead; top 10% of six-month theo ranks carry 63.8% | Carded-only; ranks use full period. Region can filter concentration, but period/tier cannot. Empty guest cohorts show no activity, not NaN. |
+| Comp pricing changed | C11–C12: roughly 12.5 → 5.8 points per comp dollar in late April; reinvestment about 1.2% → 1.3% | No causal play benefit established. UTC timestamps converted to America/Los_Angeles before subtracting six hours. All Jan–Jun redemptions cost $190,669.30; comp costs are already inside COGS. |
+| Weekday forecasts outperform flat mean | Original C13 unchanged: Jan–Apr train, May–Jun test; MAE $68,699 vs $218,258; R² .8803 vs −.0134 | Model fixed, test not used to fit. Historical diagnostics were added after seeing this result, so are not a new untouched test. No holdout-driven model replacement. |
+| Earlier time tests and intervals strengthen validation | rolling: Feb/Mar/Apr expanding training, MAE $96,678/$72,162/$40,715 vs $274,100/$223,644/$203,431. Interval radius $203,311 from rank 81 of 89 prior out-of-sample errors; 59/61 covered on May–Jun | Nominal 90%, observed 96.7%; wide mean interval $406,622. Dependent/drifting time series do not meet exchangeability guarantees. No retuning to achieve desired holdout coverage. |
+| Pilot is feasible for a meaningful effect under assumptions | pilot: 20,576 assigned, 10,288/arm; $4.88 MDE at 80% power/two-sided .05; $5 target needs 9,788/arm | Historical May-active cohort followed in June includes 71% zero outcomes. Monthly mean/SD scaled 25/30; 25% larger SD raises MDE to $6.10 and required n to 15,293/arm. Eligibility and policy exposure can lower power. |
+| Property contribution is reconciled without double-counting comps | accounting: house win + POS cash − COGS − supplied machine costs − tech labor = $22,387,661.55; theo-based version $22,294,870.93 | Not net accounting profit; excludes unspecified fixed costs. Expected contribution removes payout luck, not causal confounding. |
+| Inspection is the funded July action | scenarios: $1,200 inspection, $98,800 reserve; net −$1,224 / +$276 / +$3,276 | Recovery $0/$3k/$6k and conditional repair $0/$1.5k/$1.5k are scenarios, not established benefit. Deduct about $24 downtime. Repair needs quote; delay reduces recovery. |
+| Larger package is not funded | $12,700 inspection/signage/pilot package: downside −$12,724, base −$8,832, upside +$747 | Base signage +2%, 50% cannibalization, 10% new variable-cost allowance, 20 active days; pilot July benefit zero. No probability-weighted return claim. Catalog prices are evidence; effect assumptions are not. |
+
+## Methods and reproducibility
+
+Run build_data.py, validate_backend.py, validate_advanced.py and build_page.py per README. advanced_results.json contains full study outputs. Moving-block bootstrap uses paired observations within each period, seven-day blocks, 2,000 draws and seed 20261107. Pretrend resamples regression residual blocks. Conditional time-series intervals do not capture selection bias or all cross-machine dependence. The original MAE-gain bootstrap remains a distinct 4,000-draw paired seven-day error bootstrap.
+
+The three priced catalog types evaluated are A-INSPECT, A-WAYFINDING and A-COMP-PILOT; only one inspection is funded. Full purchase costs, lead times and downtime are explicit. A-HOLD does not consume an action slot. Price/quantity guards validate the funded action. The optional pilot and signage would require a new spending decision, not silent drawdown of reserve.
+
+Pilot details, endpoint, exclusions, randomization, sample-size assumptions and stopping rules are in PILOT_PROTOCOL.md and the dashboard. Do not use losing players as targets. Preserve prior points. Do not count non-returners as missing observations.
+
+## AI disclosure
+
+The earlier artifact disclosed Claude assistance with analysis, HTML and prose. OpenAI Codex subsequently reran the source analysis, implemented dated-placement and timezone fixes, wrote the mover/pretrend/downtime/backtest/power/scenario studies, built scope labels and controls, and ran reconciliation/browser tests. Codex also researched prior public submissions and drafted the final documentation. Team review is still required; automated checks do not imply independent human review. Prior-year submissions informed presentation patterns only, not competition data or effect estimates.
+
+## Third-party visualization attribution
+
+The casino entrance adapts the MIT-licensed Virtual Slot Machine reel geometry and symbol texture, Copyright (c) 2015 Kevin Ellis, plus the bundled Three.js renderer. Source: https://github.com/YorkshireKev/virtual-slot-machine . License notices and original source are included in code/vendor. OpenAI Codex implemented the custom casino room, cabinet, drag-lever control and dashboard integration. The illustrated spins are not evidence, a model forecast or competition data.
+
+Visual update: the poker-lounge background is AI-generated with OpenAI image generation and is illustrative, not a photograph of a real casino or source evidence. The cabinet styling is inspired by the user-supplied reference; its artwork is original Gilded Ace branding. The background asset is included and embedded in the standalone dashboard.
+
+The cabinet now uses an AI-generated photographic facade mapped onto a silhouette mesh, with separately rendered interactive 3D reels and lever. This hybrid presentation matches the generated poker lounge; it is not a fully sculpted photorealistic 3D cabinet. The illustrated paytable is decorative and is not the challenge scoring or payout model.
+
+
+
+## Interactive game implementation and AI disclosure update
+
+The educational game presents the player as the floor analytics lead advising the manager. AI assistance was used for the game architecture, JavaScript/CSS implementation, explanatory copy, case design, scenario controls, tests and submission handoff. Existing generated casino art is retained. `export-evidence.py` extracts the exact dashboard aggregate payload; `evidence-engine.js` derives live game views from it. The exported file is tested for equality with the dashboard payload. Game learning points are not judging scores, causal confidence, money or predicted returns. Provisional machine notes are the player's own assessments. The public `source.zip` includes game code, original analysis code, tests and aggregate data; raw organizer data is obtained separately.
+
+New UI findings use the same previously computed studies and retain their fixed windows, controls, alternatives and limitations. Exploring a filtered desk does not silently change a fixed case question, mover study, concentration rank or holdout result. Full ROI is not claimed for actions whose benefits or operating effects are unmodeled. No new model tuning against May–June was performed.
+# Final decision-view additions
+
+## Public simulator and Ace disclosure
+
+The public route now offers an original casino-manager simulator with a fictional $2,400 opening balance, invented drink/staff prices, seeded demand, maintenance, upgrades and repeatable nights. These rules are entertainment mechanics, not estimates from the competition dataset or the actual $100,000 action catalogue. Historical findings and their limitations remain in the judge workspace and dashboard.
+
+Gemini is live on the existing Sites host using gemini-3.5-flash-lite and a server-side secret from the Gilded Ace free-tier project. Billing was not enabled. No separate Cloudflare account is required. Local guidance handles quota or capacity failures. Live tests verified gameplay, historical evidence and calculator use; this is not an exhaustive accuracy guarantee. Code and dialogue scaffolding were AI-assisted.
+
+Scenario display clarification: legacy analysis data retains its original labels for reproducibility, but current interfaces and new game exports use descriptive assumptions instead of downside/base/upside. These scenarios are not ranked outcomes or probability bounds. In the inspection example with $3,000 recovery and $3,750 repair, net contribution is about -$1,974; the no-recovery case has no repair expense and nets about -$1,224. The judge workspace now displays the repair column. No arithmetic or underlying evidence was changed to force an ordering.
+
+`decision.js` recomputes the original ten lowest full-window actual earners from the same aggregate machine/placement payload. M-1120 and M-1118 have no June segments: verify current inventory and exclude these historical IDs from the July replacement list. M-5076 has 49 active days: collect a longer comparable history. M-1158 receives the funded inspection recommendation; six other full-window Back Forty machines remain under placement review. These are analyst judgments, not causal treatment estimates or proof of defects. Every row displays its supporting measurements and limitations, with a link to the machine evidence.
+
+The minimum Jan–Apr weekday mean is Tuesday ($1,112,942 daily wagers). An order on July 1 with the catalogue's one-day inspection lead first reaches that weekday on July 8, 2025. This is a scheduling preference subject to staffing, not a model of intervention returns. Source: `forecast.weekdayMeans`, `action_catalog`, `decision.js`; verified by `test-decision.cjs`.
+
+
+Adaptive Ace: local rules select a coaching focus from fictional floor state; Gemini generates the explanation in the player-selected style. Historical answers must retrieve the selected reviewed evidence topic. Retrieval receipts expose the source, while unknown or missing retrieval falls back rather than claiming evidence was checked. Guidance never changes odds, prices or rewards.
+
+Hosting update: Gemini is live on the existing Sites host using gemini-3.5-flash-lite and a server-side secret from the Gilded Ace free-tier project. Billing was not enabled. No separate Cloudflare account is required. Local guidance handles quota or capacity failures. Live tests verified gameplay, historical evidence and calculator use; this is not an exhaustive accuracy guarantee. Free-tier requests may be used by Google to improve products under its terms. Only questions, sanitized fictional state and public reviewed evidence are sent. See GEMINI_EVALUATION.json for the small live evaluation and GEMINI_EVALUATION_REVIEW.md for its limits.
+
+## Ace rehearsal agent
+
+Gemini proposes up to three feasible single-change plans, invokes rehearse_plan, and then invokes choose_rehearsal with a checked reason. Twenty-four paired alternative versions of the same fictional night are evaluated; they are not consecutive nights or historical forecasts. The server and client independently recompute results. Invalid or unsupported choices fail closed, and only an explicit player click applies a plan. Financial narration comes from verified calculator fields, not free-form model prose. Average net includes upfront cost once and excludes milestone bonuses; later guest retention is not modeled. Some actions change random-draw order, so paired seeds do not guarantee identical event paths. No global optimality or real-world probability claim is made. Gemini remains responsible for selecting ideas and a preference among tested tradeoffs. Evaluation and known limitations: GEMINI_EVALUATION_REVIEW.md.

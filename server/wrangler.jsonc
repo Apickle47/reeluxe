@@ -1,0 +1,12 @@
+{
+  "name": "gilded-ace-host",
+  "main": "ace-host.mjs",
+  "compatibility_date": "2026-11-08",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGIN": "https://gilded-ace-floor-manager.arnav-m0808.chatgpt.site",
+    "GEMINI_MODEL": "gemini-2.5-flash",
+    "REQUIRE_RATE_LIMIT": "true"
+  },
+  "ratelimits": [{"name":"ACE_RATE_LIMIT","namespace_id":"26110801","simple":{"limit":8,"period":60}}]
+}

@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-08",
+  "model": "gemini-3.5-flash-lite",
+  "note": "Structural checks are automatic. Generated wording requires separate human/model review; these are not independent judge scores.",
+  "results": [
+    {
+      "id": "causal-recheck",
+      "question": "Did customer switching definitely happen after M-1152 moved? Did the move prove more profit?",
+      "seconds": 1.299,
+      "checks": {
+        "stateUnchanged": true,
+        "noSecret": true,
+        "provider": true,
+        "correctEvidence": true
+      },
+      "providerStatuses": [
+        200,
+        200
+      ],
+      "reply": "The evidence cannot confirm that customer switching happened, as it was not measured, nor does it prove new casino-wide profit. Customer switching is an unmeasured possibility. The strongest alternative explanation is that unmeasured factors drove the change since moves were not randomized. Check pre-move trends and measure property-wide effects next.",
+      "comparisons": [],
+      "evidenceUsed": [
+        {
+          "topic": "location",
+          "title": "Did moving machines work?",
+          "source": "Claims appendix: advanced_analysis.py movers and pretrend; dated placements.",
+          "href": "evidence/CLAIMS_AND_EVIDENCE.md"
+        }
+      ],
+      "provider": "Gemini"
+    }
+  ]
+}

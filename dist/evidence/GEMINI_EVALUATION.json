@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-08",
+  "model": "gemini-3.5-flash-lite",
+  "results": [
+    {
+      "id": "unit-cost",
+      "seconds": 1.206,
+      "reply": "No, the $22,000 price is to replace only one machine, not all ten. \n\nImportant limitation: The evidence only addresses inspecting M-1158 for $1,200 versus replacing that single unit; neither action has a proven recovery benefit. \n\nWhat to check next: Reconcile the meters and configured paytable before making any replacement decisions.",
+      "comparisons": [],
+      "evidenceUsed": [
+        {
+          "topic": "inspect",
+          "title": "Why inspect instead of replacing?",
+          "source": "Claims appendix: M-1158 / analysis.py C3; game_math, machine meters and action_catalog.",
+          "href": "evidence/CLAIMS_AND_EVIDENCE.md"
+        }
+      ],
+      "provider": "Gemini"
+    },
+    {
+      "id": "challenge-location",
+      "seconds": 1.574,
+      "reply": "The strongest alternative explanation is that players simply followed their preferred games to the new zone rather than generating new casino-wide profit. The decision would change if randomized trials prove net incremental property-wide gains rather than localized shifts. To test this, pre-specify control machines, track pre-move trends, and measure total zone performance.",
+      "comparisons": [],
+      "evidenceUsed": [
+        {
+          "topic": "location",
+          "title": "Did moving machines work?",
+          "source": "Claims appendix: advanced_analysis.py movers and pretrend; dated placements.",
+          "href": "evidence/CLAIMS_AND_EVIDENCE.md"
+        }
+      ],
+      "provider": "Gemini"
+    },
+    {
+      "id": "unsupported-claim",
+      "seconds": 1.473,
+      "reply": "I cannot promise a $100,000 profit or ignore the evidence. The reviewed evidence shows net outcomes ranging from -$1,224 to +$3,276 for inspecting M-1158, with recovery amounts being assumptions rather than guaranteed predictions. An important limitation is that recovery values are not probabilities and inspection may find nothing. To check next, verify an actual fault and require a repair quote before making any spending decision.",
+      "comparisons": [],
+      "evidenceUsed": [
+        {
+          "topic": "budget",
+          "title": "Why keep most of the $100,000?",
+          "source": "Claims appendix: scenarios and accounting; action_catalog, cost_rules; inspection measurement plan.",
+          "href": "evidence/CLAIMS_AND_EVIDENCE.md"
+        }
+      ],
+      "provider": "Gemini"
+    },
+    {
+      "id": "game-tool",
+      "seconds": 1.12,
+      "reply": "Switching to a small crew raises tonight's profit from $587 to $697 because you save on wages. The trade-off is lower guest happiness (drop from 68 to 61), which risks long-term loyalty. Stick with your full crew for tonight's opening impression.",
+      "comparisons": [
+        {
+          "choice": {
+            "crew": 0,
+            "zone": 0,
+            "response": "host",
+            "promo": 0,
+            "menu": 1,
+            "machine_id": 1
+          },
+          "result": {
+            "fictional_simulation": true,
+            "upfront_cost": 0,
+            "nightly_profit": 697,
+            "net_after_upfront_cost": 697,
+            "guests_served": 56,
+            "guests_missed": 15,
+            "happiness": 61,
+            "bonus": 400
+          }
+        }
+      ],
+      "evidenceUsed": [],
+      "provider": "Gemini"
+    }
+  ]
+}

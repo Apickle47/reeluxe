@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240" role="img" aria-labelledby="title"><title id="title">Ace, a casino floor host in a dark suit, gold tie and glasses</title>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#5d496d"/><stop offset="1" stop-color="#182b39"/></linearGradient><linearGradient id="suit" x2="1" y2="1"><stop stop-color="#394451"/><stop offset="1" stop-color="#111b26"/></linearGradient><linearGradient id="skin" x2="1" y2="1"><stop stop-color="#e8b58b"/><stop offset="1" stop-color="#bc805d"/></linearGradient></defs>
+<rect width="200" height="240" rx="26" fill="url(#bg)"/><circle cx="100" cy="88" r="73" fill="#e5ba6b" opacity=".08"/>
+<path d="M19 240v-42q4-34 52-43h58q47 9 52 43v42" fill="url(#suit)"/>
+<path d="M78 140v25l22 19 23-20v-26" fill="url(#skin)"/><path d="m75 157 25 20 27-20 10 83H64z" fill="#f2e8d4"/>
+<path d="m92 177 8-3 9 4-4 14 8 48H88l8-48z" fill="#c5a253"/><path d="m72 156-19 9 7 27 13 2-10 12 24 34-6-62zM129 156l18 9-7 27-13 2 10 12-24 34 6-62z" fill="#48515d"/>
+<ellipse cx="56" cy="99" rx="10" ry="16" fill="#c78e69"/><ellipse cx="144" cy="99" rx="10" ry="16" fill="#c78e69"/><path d="M57 68q0-39 43-39t43 39v42q-5 43-43 44-37-2-43-44z" fill="url(#skin)"/>
+<path d="M55 88q-9-39 15-56 17-15 43-9 38 2 34 55l-6 15-8-35q-21 8-47-6-7 15-23 18l-2 22z" fill="#25242a"/><path d="M64 45q21-20 51-10" fill="none" stroke="#57505a" stroke-width="5" stroke-linecap="round"/>
+<path d="M64 83q11-6 23-1m25 0q12-5 23 1" stroke="#3b2d2b" stroke-width="4" fill="none" stroke-linecap="round"/>
+<g fill="#b5c9d0" fill-opacity=".18" stroke="#202932" stroke-width="4"><rect x="59" y="88" width="37" height="26" rx="9"/><rect x="105" y="88" width="37" height="26" rx="9"/><path d="M96 96q5-4 9 0M53 93l7 2m82 0 6-2" fill="none"/></g>
+<g fill="#30272a"><circle cx="79" cy="99" r="3"/><circle cx="121" cy="99" r="3"/></g><path d="m99 101-4 16 9 1" fill="none" stroke="#b57756" stroke-width="2" stroke-linecap="round"/><path d="M83 128q17 15 34-1" fill="#fff0d6" stroke="#955b47" stroke-width="2" stroke-linejoin="round"/>
+<path d="m144 189 8-8 9 8" fill="#d9b96f"/><rect x="123" y="205" width="42" height="16" rx="3" fill="#d3b46d"/><text x="144" y="216" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="10" fill="#25313b">ACE</text><path d="M29 224h35m72 11h32" stroke="#52606d" stroke-width="2"/>
+</svg>

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import handler from './api/ace.mjs';
+import health from './api/health.mjs';
+const req=(origin,method='OPTIONS')=>new Request('https://reeluxe.vip/api/ace',{method,headers:origin?{Origin:origin}:{}});
+assert.equal((await handler.fetch(req('https://evil.example'))).status,403);
+assert.equal((await handler.fetch(req(null))).status,403);
+assert.equal((await handler.fetch(req('https://reeluxe.vip'))).status,204);
+assert.equal((await handler.fetch(req('https://www.reeluxe.vip'))).status,204);
+process.env.VERCEL_URL='reeluxe-test.vercel.app';
+assert.equal((await handler.fetch(req('https://reeluxe-test.vercel.app'))).status,204);
+assert.equal((await handler.fetch(req('https://reeluxe.vip','GET'))).status,405);
+assert.equal((await health.fetch()).status,200);
+console.log('7 Vercel adapter checks passed');

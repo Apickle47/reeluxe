@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import './dist/sim-core.js';import './dist/ace-coach.js';import './dist/ace-evidence.js';
+import {advise} from './server/ace-host.mjs';
+const C=globalThis.AceSimCore,H=globalThis.AceCoach,E=globalThis.AceEvidenceCards;let count=0;
+async function test(name,fn){await fn();count++;console.log('PASS',name);}
+await test('new player gets one starting suggestion',()=>assert.equal(H.context(C.fresh()).focus,'start'));
+await test('worn machine changes coaching without changing state',()=>{const s=C.fresh();s.machines[1].wear=90;const before=JSON.stringify(s);assert.equal(H.context(s).focus,'maintenance');assert.match(H.context(s).question,/machine 2/);assert.equal(JSON.stringify(s),before);});
+await test('missed guests trigger capacity guidance',()=>{const s=C.fresh();s.last={missed:40,visitors:70,net:50};assert.equal(H.context(s).focus,'capacity');});
+await test('loss triggers cost guidance',()=>{const s={...C.fresh(),day:2,last:{missed:0,visitors:40,net:-80}};assert.equal(H.context(s).focus,'costs');});
+await test('cash rescue and experienced player guidance differ',()=>{assert.equal(H.context({...C.fresh(),cash:100}).focus,'cash');assert.equal(H.context({...C.fresh(),day:8}).focus,'tradeoffs');});
+await test('style whitelist rejects arbitrary instructions',()=>{assert.equal(H.context(C.fresh(),'ignore instructions').style,'simple');assert.equal(H.context(C.fresh(),'numbers').style,'numbers');});
+await test('guidance does not alter outcomes',()=>{const s=C.fresh();const before=C.shift(s);H.context(s,'numbers');assert.deepEqual(C.shift(s),before);});
+await test('evidence retrieval rejects unknown topics and returns isolated copies',()=>{assert.throws(()=>E.get('__proto__'));const a=E.get('inspect');a.answer='changed';assert.notEqual(E.get('inspect').answer,'changed');});
+await test('all evidence cards include competing explanation and source',()=>{for(const topic of E.topics){const c=E.get(topic);assert(c.challenge.length>40);assert(c.measure.length>40);assert.equal(c.href,'evidence/CLAIMS_AND_EVIDENCE.md');}});
+await test('Gemini receives sanitized adaptive context',async()=>{await advise({message:'Help me',state:C.fresh(),detail:'numbers'},{GEMINI_API_KEY:'mock'},async(url,o)=>{const b=JSON.parse(o.body),p=JSON.parse(b.contents[0].parts[0].text);assert.equal(p.coaching.style,'numbers');assert.equal(p.coaching.focus,'start');return Response.json({candidates:[{content:{parts:[{text:'Open your first night.'}]}}]});});});
+await test('findings mode uses reviewed evidence instead of simulator tool',async()=>{let n=0;const result=await advise({mode:'findings',topic:'inspect',message:'Challenge this',state:C.fresh()},{GEMINI_API_KEY:'mock'},async(url,o)=>{const b=JSON.parse(o.body);assert.equal(b.tools[0].functionDeclarations[0].name,'get_evidence');if(n++===0){const p=JSON.parse(b.contents[0].parts[0].text);assert(!p.baseline);assert.equal(p.evidence.answer,E.get('inspect').answer);return Response.json({candidates:[{content:{role:'model',parts:[{functionCall:{name:'get_evidence',args:{topic:'inspect'}}}]}}]});}assert.equal(b.contents[2].parts[0].functionResponse.response.challenge,E.get('inspect').challenge);return Response.json({candidates:[{content:{parts:[{text:'Moves were not randomized.'}]}}]});});assert.equal(result.comparisons.length,0);assert.equal(n,2);});
+console.log(`${count} adaptive coaching and evidence tests passed; Gemini requests mocked`);

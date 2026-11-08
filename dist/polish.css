@@ -1,0 +1,41 @@
+/* Shared finishing layer: type, controls and responsive rhythm. */
+:root{--body:'DM Sans',Arial,sans-serif;--display:var(--body)}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font-family:inherit}
+button,a,summary{touch-action:manipulation}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b6e79c;outline-offset:4px}
+input,select,textarea{font-size:16px}
+.nav nav>a{display:inline-flex;align-items:center;min-height:44px;font-size:13px}
+.sim-wrap,.findings-actions button,.findings-grid button{font-family:var(--body)}
+.host-form,#hostForm{min-width:0}
+#hostQuestion{min-width:0;width:100%}
+.host-prompts button,.help-style button,.ace-privacy,.desk-tabs button{min-height:44px}
+.host-prompts{gap:8px}
+.sim-sidebar .sim-goals>small{font-size:12px;line-height:1.6}
+.sim-sidebar .host-chat p{overflow-wrap:anywhere}
+.sim-hud strong,.future-options dd{font-variant-numeric:tabular-nums}
+.findings-heading h1,.sim-top h1{line-height:1.12}
+.findings-grid article,.sim-sidebar,.sim-main,.welcome-copy{min-width:0}
+dialog{max-height:85dvh;overflow:auto;overscroll-behavior:contain}
+dialog h3{margin:24px 0 8px;font-size:18px}
+dialog p{font-size:14px;line-height:1.7}
+footer.wrap{gap:24px;padding-top:28px;padding-bottom:28px}
+footer a,footer button{min-height:44px;display:inline-flex;align-items:center}
+footer p{font-size:12px;line-height:1.6}
+@media(hover:hover){.sim-options button,.host-prompts button,.findings-actions button,.findings-actions a{transition:background .16s ease,border-color .16s ease}.sim-options button:hover,.host-prompts button:hover{border-color:#dfbf82}}
+@media(max-width:900px){.sim-wrap{padding:24px 20px 40px}.sim-layout{gap:24px}.sim-sidebar{gap:20px}.welcome-feature{gap:24px}.findings-actions>*{min-height:44px}}
+@media(max-width:600px){
+ .nav{height:auto;min-height:100px;padding:12px 16px;gap:10px;flex-wrap:wrap}
+ .nav .brand{font-size:11px}.nav nav{width:100%;justify-content:space-between;gap:12px}.nav nav>a{font-size:12px;white-space:nowrap}
+ .sim-wrap{padding:22px 16px 40px}.sim-top{gap:16px;align-items:flex-start}.sim-top h1{font-size:30px}.sim-top .sim-evidence{display:none}
+ .sim-challenge-note{font-size:13px;line-height:1.6}.sim-eyebrow{letter-spacing:.12em;line-height:1.7}
+ .night-controls,.host-card,.sim-goals{padding:18px}.sim-sidebar .sim-options b{font-size:12px}.sim-sidebar .sim-options small{font-size:11px}
+ .machine-toolbar{margin-inline:0}.machine-toolbar button,.machine-toolbar select{min-height:44px;font-size:13px}
+ .host-prompts{display:flex;flex-wrap:wrap}.host-prompts button{flex:1 1 auto;font-size:12px}
+ .findings-decision,.findings-check,.findings-grid article{padding:20px}.findings-actions{gap:10px}.findings-actions>*{width:100%;text-align:left}
+ .findings-heading p{font-size:16px}.findings-heading h1{font-size:32px}
+ .welcome-bottom{align-items:flex-start;gap:16px;flex-direction:column}.welcome-bottom span{line-height:1.6}
+ footer.wrap{padding-inline:20px}footer>div{display:flex;flex-wrap:wrap;gap:8px 18px}
+ #nightSetup{scroll-margin-top:130px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

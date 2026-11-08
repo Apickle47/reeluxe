@@ -1,0 +1,7 @@
+{
+  "name": "reeluxe",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {"node": "24.x"},
+  "scripts": {"build": "node build-vercel.mjs", "test": "node run-tests.mjs"}
+}

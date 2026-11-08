@@ -1,0 +1,13 @@
+/* Evidence-grounded analyst judgments, not estimated causal treatment effects. */
+(()=>{'use strict';
+const E=window.AceEvidence,D=E.data;
+function shortlist(){return E.machines().sort((a,b)=>a.houseWin-b.houseWin).slice(0,10).map(m=>{
+ const activeJune=m.segments.some(s=>s[0]===5),base={id:m.id,days:m.days,houseWin:m.houseWin,theo:m.theo,tph:m.tph,availability:m.availability,activeJune,locations:m.locations};
+ if(!activeJune)return {...base,action:'Exclude from July replacement list',reason:`Only ${m.days} active days; no June activity. Historical totals do not describe a current July candidate.`,uncertainty:'Confirm retirement and current floor inventory before any spending.',next:'Verify inventory; do not allocate a July replacement to this ID.'};
+ if(m.id==='M-1158')return {...base,action:'Inspect first · $1,200',reason:`Paid on ${(m.hit*100).toFixed(1)}% of spins versus ${(m.expectedHit*100).toFixed(1)}% expected, despite ${(m.availability*100).toFixed(1)}% availability.`,uncertainty:'An anomaly is not proof of a fault or wrongdoing; inspection may find nothing.',next:'Verify meters and paytable. Quote and approve any repair separately.'};
+ if(m.days<181)return {...base,action:'Keep; collect a longer history',reason:`Only ${m.days} active days; expected win is $${m.tph.toFixed(2)} per available hour. Raw totals penalize short exposure.`,uncertainty:'Short exposure and location confound performance; more history may change the assessment.',next:'Compare like-for-like game and placement performance over a longer active window.'};
+ return {...base,action:'Keep for now; review placement',reason:`${m.locations[0].split(' / ')[0]}; ${(m.availability*100).toFixed(1)}% available. Actual win ${m.houseWin<m.theo?'below':'above'} expected by $${Math.abs(m.houseWin-m.theo).toFixed(0)}; expected win $${m.tph.toFixed(2)}/h.`,uncertainty:'Location, demand and luck remain alternatives. This does not establish a machine defect or a profitable move.',next:'Monitor same-game peers and location trends. Test any proposed move before scaling; measure whole-property effects.'};
+ });}
+function schedule(){const [day,mean]=Object.entries(D.forecast.weekdayMeans).sort((a,b)=>a[1]-b[1])[0],lead=D.actions.find(a=>a[0]==='A-INSPECT')[5],days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];let date=new Date(Date.UTC(2025,6,1+lead));while(days[date.getUTCDay()]!==day)date.setUTCDate(date.getUTCDate()+1);return {day,mean,date:date.toISOString().slice(0,10),label:date.toLocaleDateString('en-US',{timeZone:'UTC',month:'long',day:'numeric'}),lead};}
+window.AceDecision={shortlist,schedule};
+})();

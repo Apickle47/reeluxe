@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import host,{advise} from './server/ace-host.mjs';
+const C=globalThis.AceSimCore,A=globalThis.AceAdvisor;let n=0;
+async function test(name,fn){await fn();n++;console.log('PASS',name);}
+await test('all three futures preserve save and match actual chosen shift',()=>{const s=C.fresh(),before=JSON.stringify(s),f=A.futures(s,2);assert.equal(f.rows.length,3);for(const r of f.rows){assert(r.result);const c=r.choice,after=c.action?C.action(s,c.action,c.machine_id,c.zone):s;assert.equal(r.result.net_after_upfront_cost,C.shift(after).last.net-(s.cash-after.cash));assert.equal(r.difference,r.result.net_after_upfront_cost-f.rows[0].result.net_after_upfront_cost);}assert.equal(JSON.stringify(s),before);});
+await test('cash shortage retains explicit unavailable alternatives',()=>{const f=A.futures({...C.fresh(),cash:0},1);assert(f.rows[0].result);assert(f.rows[1].unavailable);assert(f.rows[2].unavailable);});
+await test('pristine machine is not charged for pointless repair',()=>{const s=C.fresh();s.machines[0].wear=0;assert(A.futures(s,1).rows[1].unavailable);});
+await test('full floor blocks buying',()=>{let s={...C.fresh(),cash:1e6};for(let z=0;z<3;z++)while(s.machines.filter(m=>m.z===z).length<4)s=C.action(s,'buy',null,z);assert(A.futures(s,1).rows[2].unavailable);});
+await test('buy placement falls back from full selected zone',()=>{let s={...C.fresh(),cash:1e6};while(s.machines.filter(m=>m.z===0).length<4)s=C.action(s,'buy',null,0);assert.notEqual(A.futures(s,1).rows[2].choice.zone,0);});
+await test('unknown selected machine rejected',()=>assert.throws(()=>A.futures(C.fresh(),999)));
+await test('Gemini gets server-calculated futures and cannot invent client figures',async()=>{const s=C.fresh();const out=await advise({mode:'futures',machine_id:2,state:s,message:'repair or buy?',detail:'simple',futures:{fake:true}},{GEMINI_API_KEY:'mock'},async(url,o)=>{const body=JSON.parse(o.body),p=JSON.parse(body.contents[0].parts[0].text);assert.deepEqual(p.futures,A.futures(s,2));assert.equal(body.toolConfig.functionCallingConfig.mode,'NONE');return Response.json({candidates:[{content:{parts:[{text:'Repair restores capacity; a new machine costs more upfront.'}]}}]});});assert.deepEqual(out.futures,A.futures(s,2));});
+await test('gateway rate limit denies before provider call',async()=>{const response=await host.fetch(new Request('https://host.test',{method:'POST',headers:{Origin:'https://game.test'},body:'{}'}),{ALLOWED_ORIGIN:'https://game.test',ACE_RATE_LIMIT:{limit:async()=>({success:false})}});assert.equal(response.status,429);});
+await test('required missing limiter fails closed',async()=>{const response=await host.fetch(new Request('https://host.test',{method:'POST',headers:{Origin:'https://game.test'},body:'{}'}),{ALLOWED_ORIGIN:'https://game.test',REQUIRE_RATE_LIMIT:'true'});assert.equal(response.status,503);});
+console.log(`${n} Two Futures checks passed; Gemini mocked`);

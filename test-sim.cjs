@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),C=require('./dist/sim-core.js');let count=0;
+function test(name,fn){fn();count++;console.log('PASS',name);}
+test('fresh state valid',()=>assert(C.valid(C.fresh())));
+test('corrupt saves rejected',()=>{for(const x of [{nextId:1},{seed:-1},{cash:-1},{machines:[null]},{menu:9},{machines:[]}])assert(!C.valid({...C.fresh(),...x}));});
+test('seeded shifts reproducible without mutation',()=>{const s=C.fresh(),before=JSON.stringify(s);assert.deepEqual(C.shift(s),C.shift(s));assert.equal(JSON.stringify(s),before);});
+test('cash reconciles profit and milestone rewards',()=>{const s=C.fresh(),n=C.shift(s);assert.equal(n.cash,s.cash+n.last.net+n.last.rewards.reduce((t,r)=>t+r.reward,0));});
+test('guest allocation reconciles exactly',()=>{for(let seed=0;seed<200;seed++){const n=C.shift(C.fresh(seed)).last;assert.equal(n.visitors,n.zoneResults.reduce((t,z)=>t+z.demand,0));assert.equal(n.served+n.missed,n.visitors);assert(n.missed>=0);}});
+test('buy deducts exactly and adds target machine',()=>{const s=C.fresh(),n=C.action(s,'buy',null,2);assert.equal(n.cash,s.cash-C.cost(s,'buy'));assert.equal(n.machines.length,4);assert.equal(n.machines[3].z,2);assert.equal(s.machines.length,3);});
+test('no overspending',()=>assert.throws(()=>C.action({...C.fresh(),cash:0},'buy',null,2)));
+test('zone capacity enforced',()=>{let s={...C.fresh(),cash:1e5};s=C.action(s,'buy',null,0);s=C.action(s,'buy',null,0);assert.throws(()=>C.action(s,'buy',null,0));});
+test('upgrade caps at level three',()=>{let s={...C.fresh(),cash:1e5};s=C.action(s,'upgrade',1);s=C.action(s,'upgrade',1);assert.throws(()=>C.action(s,'upgrade',1));});
+test('repair restores condition',()=>assert.equal(C.action(C.fresh(),'repair',1).machines[0].wear,0));
+test('move preserves machine ID and charges cost',()=>{const s=C.fresh(),n=C.action(s,'move',1,2);assert.equal(n.machines[0].z,2);assert.equal(n.cash,s.cash-80);assert.throws(()=>C.action(n,'move',1,2));});
+test('broken floor cannot serve guests even with help',()=>{const s=C.fresh();s.machines.forEach(m=>m.wear=100);const n=C.shift(s,'tech');assert.equal(n.last.served,0);assert.equal(n.last.broken,3);});
+test('menu and staffing affect outcomes',()=>{const s=C.fresh(),a=C.shift({...s,menu:0}),b=C.shift({...s,menu:2});assert(a.last.visitors>b.last.visitors);assert.notEqual(a.last.net,b.last.net);assert(C.shift({...s,crew:0}).machines[0].wear>C.shift({...s,crew:2}).machines[0].wear);});
+test('milestone bonuses only awarded once',()=>{let s=C.shift(C.fresh());assert(s.last.rewards.some(r=>r.id==='guests'));s=C.shift(s);assert(!s.last.rewards.some(r=>r.id==='guests'));});
+test('rescue clears unaffordable operating choices',()=>{const s=C.rescue({...C.fresh(),cash:0,crew:2,promo:2});assert(C.valid(s));assert.equal(s.cash,1200);assert.equal(s.machines.length,1);assert.equal(s.promo,0);assert.equal(s.crew,0);});
+test('optional next resort gated and grants permanent bonus',()=>{assert.throws(()=>C.nextResort(C.fresh()));const s=C.nextResort({...C.fresh(),cash:20000});assert(C.valid(s));assert.equal(s.prestige,1);assert.equal(s.day,1);assert.equal(s.machines.length,3);});
+test('500-night run remains playable and history bounded',()=>{let s=C.fresh();for(let i=0;i<500;i++){if(s.cash<300)s=C.rescue(s);for(const m of [...s.machines])if(m.wear>50&&s.cash>C.cost(s,'repair',m.id))s=C.action(s,'repair',m.id);s=C.shift(s);assert(C.valid(s));assert(s.last.missed>=0);assert(s.history.length<=30);}assert.equal(s.day,501);});
+test('comparison uses identical baseline and never spends',()=>{const s=C.fresh(),before=JSON.stringify(s),rows=C.compare(s);assert.equal(rows[0].net,C.shift(s,'host').last.net);assert.equal(rows.length,3);assert.equal(JSON.stringify(s),before);});
+test('invalid response rejected',()=>assert.throws(()=>C.shift(C.fresh(),'bogus')));
+console.log(`${count} simulator tests passed`);

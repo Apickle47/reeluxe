@@ -1,0 +1,21 @@
+{
+  "passed": 11045,
+  "placement_cells": 1838,
+  "forecast": {
+    "constMean": 1384919.0,
+    "maeBaseline": 218258.0,
+    "maeWeekday": 68699.0,
+    "mapeBaseline": 16.43,
+    "mapeWeekday": 5.02,
+    "biasWeekday": 39286.0,
+    "maeGainCI95": [
+      132183.08,
+      176045.2
+    ],
+    "r2Weekday": 0.8803,
+    "r2Baseline": -0.0134,
+    "testDays": 61
+  },
+  "comp_cost_usd": 190669.3,
+  "four_movers_retained": true
+}

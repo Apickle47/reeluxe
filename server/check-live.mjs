@@ -1,0 +1,11 @@
+import '../dist/sim-core.js';
+import '../dist/ace-advisor.js';
+import assert from 'node:assert/strict';
+const endpoint=process.env.ACE_ENDPOINT;
+if(!endpoint||!/^https:\/\//.test(endpoint))throw Error('Set ACE_ENDPOINT to the public HTTPS Worker URL. No API key goes here.');
+const state=globalThis.AceSimCore.fresh();
+const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',Origin:'https://gilded-ace-floor-manager.arnav-m0808.chatgpt.site'},body:JSON.stringify({mode:'futures',machine_id:2,state,message:'Should I repair machine 2 or buy another? Explain the tradeoff.',detail:'simple'}),signal:AbortSignal.timeout(20000)});
+if(!response.ok)throw Error(`Ace returned HTTP ${response.status}. Check Worker secrets, origin, rate limit, model access and Google API credits; do not publish an AI claim yet.`);
+const data=await response.json();assert.equal(data.provider,'Gemini');assert.equal(typeof data.reply,'string');assert(data.reply.trim());assert.deepEqual(data.futures,globalThis.AceAdvisor.futures(state,2));
+console.log('PASS: live Gemini response and calculator reconciliation. Review narration below before recording.');
+console.log(data.reply);
