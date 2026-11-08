@@ -1,4 +1,4 @@
-# Reeluxe
+# reeluxe.vip
 
 A free casino manager game set at **The Gilded Ace**, paired with a reproducible Dashboard Royale investigation. Ace uses Google Gemini to propose and test ideas before you spend fictional money.
 
